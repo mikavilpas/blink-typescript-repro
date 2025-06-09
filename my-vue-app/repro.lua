@@ -20,7 +20,7 @@ require("lazy.minit").repro({
           nerd_font_variant = "mono",
         },
         completion = {
-          documentation = { auto_show = false },
+          documentation = { auto_show = true },
           accept = {
             auto_brackets = {
               kind_resolution = {
