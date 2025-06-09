@@ -14,6 +14,8 @@ require("lazy.minit").repro({
       -- otherwise, remove this line and set `version = '*'`
       -- build = "cargo build --release",
       version = "*",
+      ---@module 'blink.cmp'
+      ---@type blink.cmp.Config
       opts = {
         keymap = { preset = "default" },
         appearance = {
@@ -34,6 +36,25 @@ require("lazy.minit").repro({
         },
         sources = {
           default = { "lsp", "path", "snippets", "buffer" },
+
+          providers = {
+            lsp = {
+              transform_items = function(_, items)
+                for _, item in ipairs(items) do
+                  if item.client_name == "typescript-tools" then
+                    local source =
+                      vim.tbl_get(item, "data", "entryNames", 1, "source")
+                    if source then
+                      item.labelDetails = item.labelDetails or {}
+                      item.labelDetails.description = source
+                    end
+                  end
+                end
+
+                return items
+              end,
+            },
+          },
         },
         fuzzy = { implementation = "lua" },
       },
